@@ -1,0 +1,1 @@
+//routy co komunikuji s fe

@@ -1,0 +1,1 @@
+//hlavni page pro server
