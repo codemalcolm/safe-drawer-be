@@ -3,8 +3,8 @@ const Card = require("../models/card");
 
 //vsechny api routy
 
-const routa = (req, res) => {
-  //jakakoli logika co bude potreba
+const get_all_cards = (req, res) => {
+  
 };
 
 const routa2 = (req, res) => {
