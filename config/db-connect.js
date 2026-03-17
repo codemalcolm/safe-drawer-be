@@ -12,21 +12,25 @@ const connectDB = async () => {
     console.error("Chyba Mongoose:", err);
     process.exit(1);
   }
-};
-
+}
 // Test pripojeni
 connectDB().then(() => {
-    process.exit(0);
+    console.log('hura')
 }).catch(err => {
-    process.exit(1);
+    console.log('caruju kraliky')
 });
 
 module.exports = connectDB;
+
 /*---------PRIKLAD POUZITI V SOUBORU------------
 const connectToDatabase = require('./config/db-connect'); 
+const Card = require('./models/Card'); // Cesta k tvému modelu
+
 async function runTask() {
-    const { db } = await connectToDatabase();
-    const cards = db.collection('cards_db'); 
-    const karta = await cards.findOne({ majitelId: clovek._id })
-    }
-runTask.()*/
+    await connectToDatabase();
+    
+    // Mongoose najde kolekci automaticky podle modelu
+    const karta = await Card.findOne({ uid: "12345" }); 
+    console.log(karta);
+}
+runTask();*/
