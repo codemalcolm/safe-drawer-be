@@ -29,9 +29,66 @@ const get_one_card = async (req, res) => {
   }
 };
 
+const delete_card = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCard = await Card.findByIdAndDelete(id);
+
+    if (!deletedCard) {
+      return res.status(404).json({ message: "Karta ke smazání nenalezena" });
+    }
+
+    res.status(200).json({ message: "Karta byla úspěšně smazána", deletedCard });
+  } catch (error) {
+    res.status(500).json({ message: "Chyba při mazání", error: error.message });
+  }
+};
+
+const create_card = async (req, res) => {
+  try {
+    const newCard = new Card(req.body);
+    await newCard.save();
+
+    res.status(201).json(newCard);
+  } catch (error) {
+    res.status(400).json({ message: "Chyba při vytváření karty", error: error.message });
+  }
+};
+
+const update_card = async (req, res) => {
+ try {
+    const { id } = req.params;
+
+    const updatedCard = await Card.findByIdAndUpdate(
+      id, 
+      req.body,      
+      { new: true }   
+    );
+
+    if (!updatedCard) {
+      return res.status(404).json({ message: "Karta k úpravě nenalezena" });
+    }
+
+    res.status(200).json({ 
+      message: "Karta byla úspěšně upravena", 
+      updatedCard 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      message: "Chyba při úpravě", 
+      error: error.message 
+    });
+  }
+};
+
+
+
 module.exports = {
   get_all_cards,
-  get_one_card
+  get_one_card,
+  create_card,
+  delete_card,
+  update_card
 }
 
 
