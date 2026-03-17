@@ -1,25 +1,13 @@
 const express = require("express");
+const uidsRouter = require("./routes/uids");
 require("dotenv").config();
-const connectToDatabase = require("./config/db-connect"); 
-const cardRoutes = require("./routes/cardRoutes"); 
-const cors = require("cors");
-
 const app = express();
-
-// middleware
-app.use(cors())
 app.use(express.json());
 
-// db connect
-connectToDatabase();
+const PORT = process.env.PORT || 3000;
 
-// Definice rout
-// Vsechny routy z routeru budou zacint na /api/cards
-app.use("/api/cards", cardRoutes);
-
-// base routa pro test jestli server bezi
-app.get("/", (req, res) => {
-  res.send("IoT Projekt be běží");
+app.get("/api/v1/hello", (req, res) => {
+  res.json({ message: "IoT Projekt be běží" });
 });
 
 // 404
@@ -27,11 +15,27 @@ app.use((req, res) => {
   res.status(404).json({ message: "Tato adresa neexistuje" });
 });
 
-const PORT = process.env.PORT || 3000;
+// Definice rout
+// Vsechny routy z routeru budou zacint na /api/cards
+app.use("/api/cards", cardRoutes);
+app.use("/api/v1/uids", uidsRouter);
+app.use("/api/v1/logs", logsRouter);
 
-app.listen(PORT, () => {
-  console.log(`-----------------------------------------`);
-  console.log(`Server nastartován na portu: ${PORT}`);
-  console.log(`Endpoint pro karty: http://localhost:${PORT}/api/cards`);
-  console.log(`-----------------------------------------`);
-});
+// Start the server
+const start = async () => {
+  try {
+    // await connectDB function here
+    await connectDB();
+    console.log("DB connected");
+    app.listen(PORT, () => {
+      console.log(`-----------------------------------------`);
+      console.log(`Server nastartován na portu: ${PORT}`);
+      console.log(`Endpoint pro karty: http://localhost:${PORT}/api/cards`);
+      console.log(`-----------------------------------------`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
