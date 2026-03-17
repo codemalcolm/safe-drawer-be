@@ -1,6 +1,9 @@
 const express = require("express");
 const uidsRouter = require("./routes/uids");
+const logsRouter = require("./routes/logs");
+const cardRouter = require("./routes/cardRoutes");
 require("dotenv").config();
+
 const app = express();
 app.use(express.json());
 
@@ -17,7 +20,7 @@ app.use((req, res) => {
 
 // Definice rout
 // Vsechny routy z routeru budou zacint na /api/cards
-app.use("/api/cards", cardRoutes);
+app.use("/api/v1/cards", cardRouter);
 app.use("/api/v1/uids", uidsRouter);
 app.use("/api/v1/logs", logsRouter);
 
@@ -30,7 +33,7 @@ const start = async () => {
     app.listen(PORT, () => {
       console.log(`-----------------------------------------`);
       console.log(`Server nastartován na portu: ${PORT}`);
-      console.log(`Endpoint pro karty: http://localhost:${PORT}/api/cards`);
+      console.log(`Endpoint pro karty: http://localhost:${PORT}/api/v1/cards`);
       console.log(`-----------------------------------------`);
     });
   } catch (error) {
