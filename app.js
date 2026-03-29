@@ -11,22 +11,18 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-// Testovací endpoint
 app.get("/api/v1/hello", (req, res) => {
   res.json({ message: "IoT Projekt be běží" });
 });
 
-// --- DEFINICE ROUT (Musí být PŘED 404) ---
 app.use("/api/v1/cards", cardRouter);
 app.use("/api/v1/uids", uidsRouter);
 app.use("/api/v1/logs", logsRouter);
 
-// --- 404 ERROR HANDLER (Musí být až ÚPLNĚ DOLE) ---
 app.use((req, res) => {
   res.status(404).json({ message: "Tato adresa neexistuje" });
 });
 
-// Start the server
 const start = async () => {
   try {
     await connectDB();
