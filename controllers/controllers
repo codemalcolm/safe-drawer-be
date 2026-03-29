@@ -1,6 +1,6 @@
 const Log = require('../models/Log');
 
-// GET - Získání všech logů
+// GET
 exports.getAllLogs = async (req, res) => {
   try {
     const logs = await Log.find();
@@ -10,7 +10,7 @@ exports.getAllLogs = async (req, res) => {
   }
 };
 
-// POST - Vytvoření nového logu
+// POST
 exports.createLog = async (req, res) => {
   try {
     const newLog = new Log(req.body);
@@ -21,7 +21,7 @@ exports.createLog = async (req, res) => {
   }
 };
 
-// DELETE - Smazání podle ID
+// DELETE
 exports.deleteLog = async (req, res) => {
   try {
     await Log.findByIdAndDelete(req.params.id);
