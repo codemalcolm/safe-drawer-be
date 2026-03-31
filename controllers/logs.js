@@ -1,4 +1,6 @@
 // Endpoint to receive access logs from ESP32
+const { allowedUIDs } = require("./uids");
+
 const addLog = (req, res) => {
   const { event, message } = req.body;
 
