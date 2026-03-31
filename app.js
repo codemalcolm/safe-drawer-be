@@ -15,10 +15,14 @@ app.get("/api/v1/hello", (req, res) => {
   res.json({ message: "IoT Projekt be běží" });
 });
 
-app.use("/api/v1/cards", cardRouter);
+
+// Definice rout
+// Vsechny routy z routeru budou zacint na /api/v1/(jméno_routy)
+// app.use("/api/v1/cards", cardRouter);
 app.use("/api/v1/uids", uidsRouter);
 app.use("/api/v1/logs", logsRouter);
 
+// 404 | (!) -> musí být vždy poslední jinak catchne každý request jako 404
 app.use((req, res) => {
   res.status(404).json({ message: "Tato adresa neexistuje" });
 });

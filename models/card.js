@@ -9,6 +9,7 @@ const cardSchema = new Schema({
   },
   user: {
     type: String, //username stylu komentar
+    default: "unknown",
     required: true,
   },
   authorization: {
