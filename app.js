@@ -2,6 +2,7 @@ const express = require("express");
 const uidsRouter = require("./routes/uids");
 const logsRouter = require("./routes/logs");
 const cardRouter = require("./routes/cardRoutes");
+// const connectDB = require("./config/db-connect");
 require("dotenv").config();
 
 const app = express();
@@ -13,22 +14,23 @@ app.get("/api/v1/hello", (req, res) => {
   res.json({ message: "IoT Projekt be běží" });
 });
 
-// 404
+
+// Definice rout
+// Vsechny routy z routeru budou zacint na /api/v1/(jméno_routy)
+// app.use("/api/v1/cards", cardRouter);
+app.use("/api/v1/uids", uidsRouter);
+app.use("/api/v1/logs", logsRouter);
+
+// 404 | (!) -> musí být vždy poslední jinak catchne každý request jako 404
 app.use((req, res) => {
   res.status(404).json({ message: "Tato adresa neexistuje" });
 });
-
-// Definice rout
-// Vsechny routy z routeru budou zacint na /api/cards
-app.use("/api/v1/cards", cardRouter);
-app.use("/api/v1/uids", uidsRouter);
-app.use("/api/v1/logs", logsRouter);
 
 // Start the server
 const start = async () => {
   try {
     // await connectDB function here
-    await connectDB();
+    // await connectDB();
     console.log("DB connected");
     app.listen(PORT, () => {
       console.log(`-----------------------------------------`);
