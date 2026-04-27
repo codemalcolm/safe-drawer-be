@@ -1,5 +1,5 @@
 const NetworkConfig = require("../models/NetworkConfig");
-const { encrypt } = require("../tools/encrypt");
+const encrypt = require("../tools/encrypt");
 
 
 const registerConfig = async (req, res) => {
