@@ -1,10 +1,12 @@
 const express = require("express");
 require("dotenv").config();
-const connectDB = require('./config/db-connect');
+const connectDB = require("./config/db-connect");
 
 const uidsRouter = require("./routes/uids");
 const logsRouter = require("./routes/logs");
 const cardRouter = require("./routes/cardRoutes");
+const onlineRouter = require("./routes/devices");
+const configRouter = require("./routes/config");
 
 const app = express();
 app.use(express.json());
@@ -15,10 +17,11 @@ app.get("/api/v1/hello", (req, res) => {
   res.json({ message: "IoT Projekt be běží" });
 });
 
-
 // Definice rout
 // Vsechny routy z routeru budou zacint na /api/v1/(jméno_routy)
-// app.use("/api/v1/cards", cardRouter);
+app.use("/api/v1/cards", cardRouter);
+app.use("/api/v1/devices", onlineRouter);
+app.use("/api/v1/devices/config", configRouter);
 app.use("/api/v1/uids", uidsRouter);
 app.use("/api/v1/logs", logsRouter);
 
