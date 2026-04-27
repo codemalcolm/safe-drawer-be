@@ -1,4 +1,5 @@
 const NetworkConfig = require("../models/NetworkConfig");
+const Device = require("../models/Device");
 const mqttClient = require("../tools/mqttClient"); // Assuming you set this up from earlier
 
 const toggleOnline = async (req, res) => {
