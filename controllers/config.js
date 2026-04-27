@@ -1,53 +1,41 @@
 const NetworkConfig = require("../models/NetworkConfig");
+const { encrypt } = require("../tools/encrypt");
+
 
 const registerConfig = async (req, res) => {
-  if (!req.body) return res.status(400).json({ error: "The request is incomplete" });
-
-  const { raspberryPiId } = req.body;
-
-  if (!raspberryPiId) return res.status(400).json({ error: "Device ID is required to claim a device." });
-  
-  // Fetch the network config from the unboxing phase
-  const networkConfig = await NetworkConfig.findOne({ raspberryPiId });
-
-  if (!networkConfig) {
-    return res.status(404).json({
-      error:
-        "Configuration not found. Please complete the Wi-Fi configuration of your device first.",
-    });
-  }
-
-  // Prevent Duplicates (Check if device is already claimed)
-  const existingDevice = await Device.findOne({ raspberryPiId });
-
-  if (existingDevice) {
-    return res.status(409).json({
-      error: "This SafeDrawer is already registered to an account.",
-    });
-  }
-
   try {
-    // Everything checks out -> Create the actual Device object
-    const newDevice = new Device({
-      drawerName: networkConfig.drawerName,
-      location: networkConfig.location || "unspecified",
-      raspberryPiId: networkConfig.raspberryPiId,
-      isLocked: true,
-    });
+    const { drawerName, raspberryPiId, ssid, password, location } = req.body;
 
-    await newDevice.save();
+    if (!drawerName || !raspberryPiId || !ssid || !password) {
+      return res.status(400).json({ error: "Missing required configuration details." });
+    }
 
-    // Success! Return the new device to the frontend
-    return res.status(201).json({
+    // Encrypt the incoming plain-text password
+    const encryptedPassword = encrypt(password);
+
+    // This looks for an existing config for this specific Pi.
+    // If it finds one, it updates it. If it doesn't exist, it creates a new one.
+    const savedConfig = await NetworkConfig.findOneAndUpdate(
+      { raspberryPiId }, // The search filter
+      {
+        drawerName,
+        ssid,
+        password: encryptedPassword,
+        location: location || "unspecified",
+      },
+      { new: true, upsert: true } // 'upsert: true' is the magic command here
+    );
+
+    // Respond to the Raspberry Pi
+    return res.status(200).json({
       success: true,
-      message: "SafeDrawer successfully claimed!",
-      device: newDevice,
+      message: "Configuration successfully registered to the cloud.",
+      configId: savedConfig._id 
     });
+
   } catch (error) {
-    console.error("Error claiming device:", error);
-    return res
-      .status(500)
-      .json({ error: "Internal server error while claiming device." });
+    console.error("Error saving network config to database:", error);
+    return res.status(500).json({ error: "Internal server error while registering config." });
   }
 };
 
