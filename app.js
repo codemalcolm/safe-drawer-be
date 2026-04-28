@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const connectDB = require("./config/db-connect");
+const cors = require('cors');
 
 const uidsRouter = require("./routes/uids");
 const logsRouter = require("./routes/logs");
@@ -9,6 +10,14 @@ const devicesRouter = require("./routes/devices");
 const configRouter = require("./routes/config");
 
 const app = express();
+
+// Allow requests from frontend
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
