@@ -22,8 +22,8 @@ const cardSchema = new Schema({
   updatedAt: { type: Date, default: Date.now() },
   drawerId: {
     type: Schema.Types.ObjectId,
-    ref: "Drawer", // This must match the exact name you gave your Drawer model
-    required: false, // Set to true if a card MUST be assigned to a drawer
+    ref: "Device",
+    required: true, // card MUST be assigned to a drawer
   },
 });
 
