@@ -31,7 +31,6 @@ app.get("/api/v1/hello", (req, res) => {
 app.use("/api/v1/cards", cardRouter);
 app.use("/api/v1/devices", devicesRouter);
 app.use("/api/v1/devices/config", configRouter);
-app.use("/api/v1/uids", uidsRouter);
 app.use("/api/v1/logs", logsRouter);
 
 // 404 | (!) -> musí být vždy poslední jinak catchne každý request jako 404
