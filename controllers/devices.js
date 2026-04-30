@@ -138,8 +138,6 @@ const removeDevice = async (req, res) => {
         .json({ error: "Device not found or already deleted." });
     }
 
-    await NetworkConfig.findOneAndDelete({ raspberryPiId });
-
     return res.status(200).json({
       success: true,
       message: "SafeDrawer successfully removed",
