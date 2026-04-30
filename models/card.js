@@ -15,15 +15,17 @@ const cardSchema = new Schema({
   isAuthorized: {
     type: Boolean,
     required: true,
-    default: false, //nova karta se bude do db automaticky ukladat jako neautorizovana
-    lastUsed: { type: Date, default: Date.now() },
-    createdAt: { type: Date, default: Date.now() },
-    updatedAt: { type: Date, default: Date.now() },
-    drawerId: { type: String },
+    default: false,
+  }, //nova karta se bude do db automaticky ukladat jako neautorizovana
+  lastUsed: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: { type: Date, default: Date.now() },
+  drawerId: {
+    type: Schema.Types.ObjectId,
+    ref: "Drawer", // This must match the exact name you gave your Drawer model
+    required: false, // Set to true if a card MUST be assigned to a drawer
   },
 });
-
-//v mongoose se neresi id objektu db
 
 const Card = mongoose.model("Card", cardSchema);
 module.exports = Card;
