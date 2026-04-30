@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Card = require("../models/card");
-
-// Check if ID is a valid MongoDB ObjectId
-const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
+const { isValidId } = require("../tools/utils");
 
 const get_all_cards = async (req, res) => {
   try {
