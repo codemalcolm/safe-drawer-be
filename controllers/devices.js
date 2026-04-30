@@ -104,22 +104,18 @@ const addDevice = async (req, res) => {
     });
 
     await newDevice.save();
-    // !!! remove after test
-    console.log("yaay we up in this hoe", newDevice);
+
     // Success! Return the new device to the frontend
     return res.status(201).json({
       success: true,
       message: "SafeDrawer successfully claimed!",
-      device: newDevice,
     });
   } catch (error) {
     console.error("Error claiming device:", error);
-    return res
-      .status(500)
-      .json({
-        error: "Internal server error while claiming device.",
-        errorMsg: error,
-      });
+    return res.status(500).json({
+      error: "Internal server error while claiming device.",
+      errorMsg: error,
+    });
   }
 };
 
@@ -157,4 +153,18 @@ const removeDevice = async (req, res) => {
   }
 };
 
-module.exports = { toggleOnline, addDevice, removeDevice };
+const getAllDevices = async (req, res) => {
+  try {
+    const fetchedDevices = await Device.find();
+    if (!fetchedDevices)
+      return res.status(404).json({ error: "No devices found" });
+
+    return res.status(200).json({ success: "ok", fetchedDevices });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Unexpected error occured", errorMsg: error });
+  }
+};
+
+module.exports = { toggleOnline, addDevice, removeDevice, getAllDevices };
