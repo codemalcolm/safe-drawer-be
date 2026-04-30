@@ -2,11 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { addLog, getAllLogs, deleteLog } = require("../controllers/logs");
 
-router.route("/")
-    .post(addLog)      
-    .get(getAllLogs); 
+router.route("/").post(addLog);
 
-router.route("/:id")
-    .delete(deleteLog); 
+router.route("/:drawerId").get(getAllLogs);
+
+router.route("/:id").delete(deleteLog);
 
 module.exports = router;

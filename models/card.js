@@ -3,23 +3,29 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const cardSchema = new Schema({
-  uid: {
+  cardId: {
     type: String,
     required: true,
   },
-  user: {
+  note: {
     type: String, //username stylu komentar
     default: "unknown",
     required: true,
   },
-  authorization: {
+  isAuthorized: {
     type: Boolean,
     required: true,
-    default: false, //nova karta se bude do db automaticky ukladat jako neautorizovana
+    default: false,
+  }, //nova karta se bude do db automaticky ukladat jako neautorizovana
+  lastUsed: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: { type: Date, default: Date.now() },
+  drawerId: {
+    type: Schema.Types.ObjectId,
+    ref: "Device",
+    required: true, // card MUST be assigned to a drawer
   },
 });
-
-//v mongoose se neresi id objektu db
 
 const Card = mongoose.model("Card", cardSchema);
 module.exports = Card;

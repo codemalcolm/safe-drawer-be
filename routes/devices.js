@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  toggleOnline,
   addDevice,
   removeDevice,
+  getAllDevices,
 } = require("../controllers/devices");
 
-router.route("/").get(toggleOnline).post(addDevice).delete(removeDevice);
+router.route("/").get(getAllDevices).post(addDevice).delete(removeDevice);
 
 module.exports = router;
