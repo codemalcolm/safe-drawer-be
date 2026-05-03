@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { isValidId } = require("../tools/utils");
 const Log = require("../models/Log");
 
+// might be useless (MQTT Substitute)
 const addLog = async (req, res) => {
   const { event, message, drawerId, type, timestamp } = req.body;
 
